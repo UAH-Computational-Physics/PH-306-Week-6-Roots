@@ -1,7 +1,7 @@
 import pytest
 from numpydoc.validate import validate
 
-import assignment
+import roots
 
 
 DOCSTRING_TARGETS = [
