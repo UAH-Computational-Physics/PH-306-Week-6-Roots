@@ -5,9 +5,13 @@ import roots
 
 
 DOCSTRING_TARGETS = [
-    # Add Functions for Docstring Feedback here
-    # For example:
-    # assignment.distance_traveled
+    roots.root_quadratic_projectile_time,
+    roots.root_wien_displacement_x,
+    roots.root_radioactive_decay_time,
+    roots.root_finite_square_well_even_state,
+    roots.roots_damped_oscillator,
+    roots.root_circle_intersection,
+    roots.root_two_masses_three_strings,
 ]
 
 DOCSTRING_CHECKS = {
