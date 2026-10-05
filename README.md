@@ -86,8 +86,9 @@ distance `L`. The inputs are
 
 Return `((theta1, theta2, theta3), (T1, T2, T3))` (see the book). This can be done with nine equations where the $\sin$ and $\cos$ of an angle are treated independently as in the book (avoids cyclic nature of the parameters) or with six equations where the independent values are only the angles and the tensions. Assume parameters are such that an equilibrium exists with all tensions positive.
 
-## Running the Public Tests
+## Checking Your Work
 
 ```bash
-pytest test_public.py
+pytest -q test_public.py test_public_docs.py
+python -m mypy --config-file mypy.ini --strict --allow-untyped-decorators roots.py
 ```
