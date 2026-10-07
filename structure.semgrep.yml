@@ -1,0 +1,362 @@
+# Semgrep structure checks for roots.py (CodeGrade "Code Structure Test").
+#
+# Each rule below corresponds to one Positive Match or Negative Match block
+# nested inside a Code Structure Test block in CodeGrade AutoTest V2. Copy the
+# `pattern`/`patterns` portion of a single rule into a Match Block's template
+# (see https://help.codegrade.com/automatic-grading-guides/code-structure-tests-with-semgrep.md).
+#
+# - PositiveMatch rules (pattern-*-exists, pattern-*-uses-*): the test passes
+#   if the pattern IS found.
+# - NegativeMatch rules (pattern-*-forbids-*): the test passes if the pattern
+#   is NOT found.
+#
+# The `*-forbids-hardcoded-return` rules are also NegativeMatch rules: they
+# flag a `return` statement whose value is a bare numeric literal (or a
+# tuple of bare numeric literals), which is how a student could fake the
+# answer to a public test (e.g. `return 2.0`) instead of computing it from
+# the function's arguments.
+rules:
+  # --- Function existence checks (PositiveMatch) --- #
+  - id: has-root_quadratic_projectile_time
+    pattern: |
+      def root_quadratic_projectile_time(...):
+          ...
+    message: >-
+      Missing required function `root_quadratic_projectile_time` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-root_wien_displacement_x
+    pattern: |
+      def root_wien_displacement_x(...):
+          ...
+    message: >-
+      Missing required function `root_wien_displacement_x` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-root_radioactive_decay_time
+    pattern: |
+      def root_radioactive_decay_time(...):
+          ...
+    message: >-
+      Missing required function `root_radioactive_decay_time` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-root_finite_square_well_even_state
+    pattern: |
+      def root_finite_square_well_even_state(...):
+          ...
+    message: >-
+      Missing required function `root_finite_square_well_even_state` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-roots_damped_oscillator
+    pattern: |
+      def roots_damped_oscillator(...):
+          ...
+    message: >-
+      Missing required function `roots_damped_oscillator` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-root_circle_intersection
+    pattern: |
+      def root_circle_intersection(...):
+          ...
+    message: >-
+      Missing required function `root_circle_intersection` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  - id: has-root_two_masses_three_strings
+    pattern: |
+      def root_two_masses_three_strings(...):
+          ...
+    message: >-
+      Missing required function `root_two_masses_three_strings` in roots.py.
+    languages: [python]
+    severity: ERROR
+
+  # --- `scipy.optimize.root_scalar` required (PositiveMatch) --- #
+  - id: root_wien_displacement_x-uses-root_scalar
+    patterns:
+      - pattern-inside: |
+          def root_wien_displacement_x(...):
+              ...
+      - pattern-either:
+          - pattern: root_scalar(...)
+          - pattern: $MOD.root_scalar(...)
+    message: >-
+      `root_wien_displacement_x` must call `scipy.optimize.root_scalar`.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_radioactive_decay_time-uses-root_scalar
+    patterns:
+      - pattern-inside: |
+          def root_radioactive_decay_time(...):
+              ...
+      - pattern-either:
+          - pattern: root_scalar(...)
+          - pattern: $MOD.root_scalar(...)
+    message: >-
+      `root_radioactive_decay_time` must call `scipy.optimize.root_scalar`.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_finite_square_well_even_state-uses-root_scalar
+    patterns:
+      - pattern-inside: |
+          def root_finite_square_well_even_state(...):
+              ...
+      - pattern-either:
+          - pattern: root_scalar(...)
+          - pattern: $MOD.root_scalar(...)
+    message: >-
+      `root_finite_square_well_even_state` must call `scipy.optimize.root_scalar`.
+    languages: [python]
+    severity: ERROR
+
+  # --- `scipy.optimize.root` required (PositiveMatch) --- #
+  - id: root_circle_intersection-uses-root
+    patterns:
+      - pattern-inside: |
+          def root_circle_intersection(...):
+              ...
+      - pattern-either:
+          - pattern: root(...)
+          - pattern: $MOD.root(...)
+    message: >-
+      `root_circle_intersection` must call `scipy.optimize.root`.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_two_masses_three_strings-uses-root
+    patterns:
+      - pattern-inside: |
+          def root_two_masses_three_strings(...):
+              ...
+      - pattern-either:
+          - pattern: root(...)
+          - pattern: $MOD.root(...)
+    message: >-
+      `root_two_masses_three_strings` must call `scipy.optimize.root`.
+    languages: [python]
+    severity: ERROR
+
+  # --- Cross-checks: forbid the wrong solver (NegativeMatch) --- #
+  - id: root_wien_displacement_x-forbids-root
+    patterns:
+      - pattern-inside: |
+          def root_wien_displacement_x(...):
+              ...
+      - pattern-either:
+          - pattern: root(...)
+          - pattern: $MOD.root(...)
+    message: >-
+      `root_wien_displacement_x` should use the scalar `root_scalar` solver,
+      not the multivariate `root` solver.
+    languages: [python]
+    severity: WARNING
+
+  - id: root_radioactive_decay_time-forbids-root
+    patterns:
+      - pattern-inside: |
+          def root_radioactive_decay_time(...):
+              ...
+      - pattern-either:
+          - pattern: root(...)
+          - pattern: $MOD.root(...)
+    message: >-
+      `root_radioactive_decay_time` should use the scalar `root_scalar`
+      solver, not the multivariate `root` solver.
+    languages: [python]
+    severity: WARNING
+
+  - id: root_finite_square_well_even_state-forbids-root
+    patterns:
+      - pattern-inside: |
+          def root_finite_square_well_even_state(...):
+              ...
+      - pattern-either:
+          - pattern: root(...)
+          - pattern: $MOD.root(...)
+    message: >-
+      `root_finite_square_well_even_state` should use the scalar
+      `root_scalar` solver, not the multivariate `root` solver.
+    languages: [python]
+    severity: WARNING
+
+  - id: root_circle_intersection-forbids-root_scalar
+    patterns:
+      - pattern-inside: |
+          def root_circle_intersection(...):
+              ...
+      - pattern-either:
+          - pattern: root_scalar(...)
+          - pattern: $MOD.root_scalar(...)
+    message: >-
+      `root_circle_intersection` should use the multivariate `root` solver,
+      not the scalar `root_scalar` solver.
+    languages: [python]
+    severity: WARNING
+
+  - id: root_two_masses_three_strings-forbids-root_scalar
+    patterns:
+      - pattern-inside: |
+          def root_two_masses_three_strings(...):
+              ...
+      - pattern-either:
+          - pattern: root_scalar(...)
+          - pattern: $MOD.root_scalar(...)
+    message: >-
+      `root_two_masses_three_strings` should use the multivariate `root`
+      solver, not the scalar `root_scalar` solver.
+    languages: [python]
+    severity: WARNING
+
+  # --- Forbid hard-coded public-test answers (NegativeMatch) --- #
+  - id: root_quadratic_projectile_time-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_quadratic_projectile_time(...):
+              ...
+      - pattern: return $NUM
+      - metavariable-regex:
+          metavariable: $NUM
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_quadratic_projectile_time` must compute its answer from `h0`,
+      `v0`, and `g`, not `return` a hard-coded number.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_wien_displacement_x-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_wien_displacement_x(...):
+              ...
+      - pattern: return $NUM
+      - metavariable-regex:
+          metavariable: $NUM
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_wien_displacement_x` must compute its answer from `coef`, not
+      `return` a hard-coded number.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_radioactive_decay_time-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_radioactive_decay_time(...):
+              ...
+      - pattern: return $NUM
+      - metavariable-regex:
+          metavariable: $NUM
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_radioactive_decay_time` must compute its answer from `N0`,
+      `N_target`, and `half_life`, not `return` a hard-coded number.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_finite_square_well_even_state-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_finite_square_well_even_state(...):
+              ...
+      - pattern: return $NUM
+      - metavariable-regex:
+          metavariable: $NUM
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_finite_square_well_even_state` must compute its answer from
+      `V0`, `m`, `hbar`, and `L`, not `return` a hard-coded number.
+    languages: [python]
+    severity: ERROR
+
+  - id: roots_damped_oscillator-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def roots_damped_oscillator(...):
+              ...
+      - pattern-either:
+          - patterns:
+              - pattern: return ($A, $B)
+              - metavariable-regex:
+                  metavariable: $A
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+              - metavariable-regex:
+                  metavariable: $B
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+          - patterns:
+              - pattern: return (complex($A, $B), complex($C, $D))
+              - metavariable-regex:
+                  metavariable: $A
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+              - metavariable-regex:
+                  metavariable: $B
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+              - metavariable-regex:
+                  metavariable: $C
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+              - metavariable-regex:
+                  metavariable: $D
+                  regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `roots_damped_oscillator` must compute its roots from `m`, `c`, and
+      `k`, not `return` hard-coded numbers.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_circle_intersection-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_circle_intersection(...):
+              ...
+      - pattern: return ($X, $Y)
+      - metavariable-regex:
+          metavariable: $X
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $Y
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_circle_intersection` must compute `(x, y)` from `r1`, `r2`, and
+      `d`, not `return` hard-coded numbers.
+    languages: [python]
+    severity: ERROR
+
+  - id: root_two_masses_three_strings-forbids-hardcoded-return
+    patterns:
+      - pattern-inside: |
+          def root_two_masses_three_strings(...):
+              ...
+      - pattern: return (($T1, $T2, $T3), ($U1, $U2, $U3))
+      - metavariable-regex:
+          metavariable: $T1
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $T2
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $T3
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $U1
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $U2
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+      - metavariable-regex:
+          metavariable: $U3
+          regex: '^-?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$'
+    message: >-
+      `root_two_masses_three_strings` must compute the angles and tensions
+      from `L`, `lengths`, and `weights`, not `return` hard-coded numbers.
+    languages: [python]
+    severity: ERROR
